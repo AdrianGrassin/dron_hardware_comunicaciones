@@ -1,0 +1,3 @@
+# Solo para la fuente de vídeo. El receptor usa la biblioteca estándar.
+# Si la Jetson ya tiene cv2 con FFmpeg, reutilizar ese entorno.
+opencv-python-headless>=4.11,<5
