@@ -5,17 +5,19 @@ He preparado este repo para probar la conexión de vídeo sin tener el dron dela
 Con `--demo` las imágenes son simuladas, pero **el intercambio HTTP/TCP es real**. La demo usa CPU; no necesita CUDA ni un modelo de visión.
 
 ```mermaid
-sequenceDiagram
-    participant F as Fuente de imágenes<br/>PC o Jetson · puerto 8089
-    participant R as Receptor en el PC<br/>puerto 8090
-    participant V as Navegador del PC
-
-    V->>R: Pide un fotograma · GET /rgb.jpg
-    R->>F: GET /rgb.jpg · HTTP/TCP
-    F-->>R: Responde con un JPEG
-    R-->>V: Entrega los mismos bytes JPEG
-    Note over R,V: Visor en http://127.0.0.1:8090
+flowchart LR
+    subgraph J["Jetson"]
+        F["Fuente de vídeo<br/>Servidor · puerto 8089"]
+    end
+    subgraph PC["PC · estación de tierra"]
+        R["Receptor<br/>Puerto 8090"]
+        V["Navegador<br/>Muestra el vídeo"]
+    end
+    F -->|"Wi-Fi · HTTP/TCP<br/>Fotogramas JPEG"| R
+    R -->|"Conexión local<br/>Fotogramas JPEG"| V
 ```
+
+Las flechas muestran el recorrido de las imágenes. El navegador las solicita al receptor y este a la fuente. En la prueba local, la fuente también se ejecuta en el PC.
 
 ## Probarlo
 
